@@ -267,10 +267,16 @@ class GraphAPI(object):
         if result and isinstance(result, dict) and result.get("error"):
             raise GraphAPIError(result)
 
-        if 'X-App-Usage' in headers:
-            result['_rate_limit'] = headers['X-App-Usage']
-        else:
-            result['_rate_limit'] = {"call_count": 0, "total_time": 0, "total_cputime": 0}
+        if result:
+            if not isinstance(result, dict):
+                result = {
+                    'result': result
+                }
+
+            if 'X-App-Usage' in headers:
+                result['_rate_limit'] = headers['X-App-Usage']
+            else:
+                result['_rate_limit'] = {"call_count": 0, "total_time": 0, "total_cputime": 0}
 
         return result
 
