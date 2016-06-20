@@ -266,6 +266,10 @@ class GraphAPI(object):
 
         if result and isinstance(result, dict) and result.get("error"):
             raise GraphAPIError(result)
+
+	if 'X-App-Usage' in headers:
+	    result['x-app-usage'] = headers['X-App-Usage']
+
         return result
 
     def fql(self, query):
